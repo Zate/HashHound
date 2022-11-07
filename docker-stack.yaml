@@ -1,0 +1,32 @@
+version: '3'
+services:
+  urip:
+    image: "zate75/hashhound:latest"
+    container_name: hashhound
+    restart: on-failure
+    entrypoint: ["/app"]
+    networks:
+      - internal
+      - traefik-public
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.backend=hashhound
+        - traefik.frontend.rule=Host:hashtags.fyi
+        - traefik.docker.network=traefik-public
+        - traefik.enable=true
+        - traefik.port=3003
+        - traefik.tags=traefik-public
+        - traefik.redirectorservice.frontend.entryPoints=http
+        - traefik.redirectorservice.frontend.redirect.entryPoint=https
+        # Traefik service that listens to HTTPS
+        - traefik.webservice.frontend.entryPoints=https
+
+networks:
+  traefik-public:
+    external: true
+  internal:
+    external: false
+

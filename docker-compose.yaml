@@ -1,0 +1,22 @@
+version: '3'
+services:
+  urip:
+    build:
+      context: .
+    image: "zate75/hashhound"
+    container_name: hashhound
+    restart: always
+    networks:
+      - internal
+      - proxy
+    labels:
+      - traefik.backend=hashhound
+      - traefik.frontend.rule=Host:hashtags.fyi
+      - traefik.docker.network=proxy
+
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false
+
