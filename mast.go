@@ -95,7 +95,7 @@ func getTags(name string) {
 
 func getMastodonHashTags() {
 	k := new(ApiKey)
-	appkey, err := os.ReadFile(".apikey")
+	appkey, err := os.ReadFile("/run/secrets/AppKey")
 	errCheck("Not able to read appkey secret", err)
 	k.AppKey = string(appkey)
 	url := "https://instances.social/api/1.0/instances/list?count=0&include_down=false&include_closed=false&min_active_users=100&sort_by=active_users&sort_order=desc"

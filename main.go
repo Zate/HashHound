@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"sort"
 
 	"github.com/jasonlvhit/gocron"
@@ -12,7 +11,10 @@ import (
 	"github.com/labstack/echo/middleware"
 )
 
-var HashMap = make(map[string]int)
+var (
+	HashMap  = make(map[string]int)
+	HashList = ""
+)
 
 func errCheck(msg string, err error) {
 	if err != nil {
@@ -58,19 +60,17 @@ func hashtags(c echo.Context) error {
 		}
 		
 		.wrapper .overlay {
-			position: absolute;
 			top: 70%;
 			left: 38%;
-			transform: translate(-50%, -50%);
 			color: black;
 		}
 		</style>
 	  </head> 
 	  <body>
 	  <div class="wrapper">
-		<div class="overlay"><h2>`
-	payload += getHashMap()
-	payload += `</h2></div>
+		<div class="overlay">Refreshes every 15m, pulls top 10 hashtags from servers that are up, not closed, have more than 100 active users</br>`
+	payload += HashList
+	payload += `</div>
 	</div>
 	<a rel="me" href="https://infosec.exchange/@zate"></a>
 </body>
@@ -78,11 +78,11 @@ func hashtags(c echo.Context) error {
 	return c.HTMLBlob(http.StatusOK, []byte(payload))
 }
 
-func getHashMap() string {
-	s, err := os.ReadFile(".hashmap")
-	errCheck("Not able to read .hashmap", err)
-	return string(s)
-}
+// func getHashMap() string {
+// 	// s, err := os.ReadFile(".hashmap")
+// 	// errCheck("Not able to read .hashmap", err)
+// 	return HashList
+// }
 
 func updateHashTagFile() {
 	for k := range HashMap {
@@ -101,9 +101,10 @@ func updateHashTagFile() {
 	for _, k := range keys {
 		s += "#" + k + " => " + fmt.Sprint(HashMap[k]) + "</br>\n"
 	}
-	f := []byte(s)
-	err := os.WriteFile(".hashmap", f, 0644)
-	errCheck("Problem Writing to file", err)
+	HashList = s
+	// f := []byte(s)
+	// err := os.WriteFile(".hashmap", f, 0644)
+	// errCheck("Problem Writing to file", err)
 	log.Println("This task will run periodically")
 }
 

@@ -1,6 +1,6 @@
 version: '3'
 services:
-  urip:
+  hashhound:
     build:
       context: .
     image: "zate75/hashhound"

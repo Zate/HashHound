@@ -1,6 +1,6 @@
 version: '3'
 services:
-  urip:
+  hashhound:
     image: "zate75/hashhound:latest"
     container_name: hashhound
     restart: on-failure

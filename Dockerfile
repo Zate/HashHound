@@ -13,7 +13,7 @@ WORKDIR /src
 # RUN go mod download
 
 COPY ./*.png ./*.xml ./*.json ./*.go ./*.ico ./
-RUN go mod init https://github.com/Zate/HashHound
+RUN go mod init github.com/Zate/HashHound
 RUN go mod tidy
 
 RUN CGO_ENABLED=0 go build \
